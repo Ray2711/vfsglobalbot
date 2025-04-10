@@ -1,6 +1,7 @@
 from seleniumbase import SB
 from send_msg import send_telegram_message
 from random_email import (get_random_email, get_password)
+from captcha import cf_manual_solver
 with SB(uc=True) as sb:
     url = "https://visa.vfsglobal.com/kaz/en/hun/login"
     login = get_random_email()
@@ -12,27 +13,7 @@ with SB(uc=True) as sb:
     sb.sleep(10)
     sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
     ##CLOUDFLARE 
-    sb.sleep(2)  # подстраховка
-
-    try:
-        # Переключаемся в iframe по частичному URL
-        frames = sb.driver.find_elements("tag name", "iframe")
-        for frame in frames:
-            src = frame.get_attribute("src")
-            if src and "https://challenges.cloudflare.com/cdn-cgi" in src:
-                sb.driver.switch_to.frame(frame)
-                break
-
-        # Ждём появления элемента .mark и кликаем по нему
-        sb.wait_for_element_visible(".cb-c", timeout=5)
-        sb.sleep(15)  # Cloudflare задержка
-        sb.click(".cb-c")
-
-        sb.driver.switch_to.default_content()
-
-    except Exception as e:
-        print("Cloudflare challenge not found or failed:", e)
-
+    cf_manual_solver(sb)
 
     ##END CLOUDFLARE
     sb.sleep(5)
@@ -57,6 +38,8 @@ with SB(uc=True) as sb:
     sb.cdp.click('mat-option:contains("Tourist")')
     sb.sleep(5)
     dates = sb.cdp.get_text("div.border-info")
-    send_telegram_message("Dates for Visa centre of Hungary in Almaty" +sb.get_text("//mat-option[contains(., 'Visa Application Ce')]") + dates)
+    #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Almaty')]") +"\n" +dates)
+    send_telegram_message("Вен Алм " +"\n" +dates)
+
 
 
