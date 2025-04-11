@@ -37,7 +37,8 @@ with SB(uc=True) as sb:
     sb.cdp.click('mat-option:contains("Tourist")')
     sb.sleep(5)
     dates = sb.cdp.get_text("div.border-info")
-    send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Application Ce')]") + "\n" +dates)
+    #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Application Ce')]") + "\n" +dates)
+    send_telegram_message("Ита Алм " +"\n" +dates)
     sb.cdp.click('mat-select:contains("Application Ce")')
     sb.sleep(1)
     sb.cdp.click('mat-option:contains("Astana")')
@@ -51,7 +52,9 @@ with SB(uc=True) as sb:
     sb.cdp.click('mat-option:contains("Tourist")')
     sb.sleep(5)
     dates = sb.cdp.get_text("div.border-info")
-    send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Application Ce')]") + "\n" +dates)
+    #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Application Ce')]") + "\n" +dates)
+
+    send_telegram_message("Ита Аст" +"\n" +dates)
     
 
 

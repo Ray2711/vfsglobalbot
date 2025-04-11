@@ -36,7 +36,8 @@ with SB(uc=True) as sb:
     sb.cdp.click('mat-option:contains("Short Stay")')
     sb.sleep(5)
     dates = sb.cdp.get_text("div.border-info")
-    send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Application Ce')]") +"\n" +dates)
+    #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Application Ce')]") +"\n" +dates)
+    send_telegram_message("Фра Алм " +"\n" +dates)
     sb.sleep(5)
     sb.cdp.click('mat-select:contains("Application Centre")')
     sb.sleep(1)
@@ -51,6 +52,7 @@ with SB(uc=True) as sb:
     sb.cdp.click('mat-option:contains("Short Stay")')
     sb.sleep(5)
     dates = sb.cdp.get_text("div.border-info")
-    send_telegram_message("Dates for Visa centre of " +sb.get_text("#mat-select-0") +"\n" +dates)
+    #send_telegram_message("Dates for Visa centre of " +sb.get_text("#mat-select-0") +"\n" +dates)
+    send_telegram_message("Фра Аст " +"\n" +dates)
 
 
