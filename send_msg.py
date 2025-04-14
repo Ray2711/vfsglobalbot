@@ -1,3 +1,5 @@
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import requests
 import os
 import re
@@ -8,7 +10,7 @@ load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-def send_telegram_message(text: str) -> dict:
+def send_telegram_message(text: str) -> None:
     """
     Sends a message to a Telegram chat using a bot token from environment variables.
 

@@ -33,7 +33,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
         app_el.click()
         sb.sleep(1)
         #sb.cdp.click(f'mat-option:contains("{city1}"):not(:contains("Consulate")):not(:contains("Embassy"))')
-        sb.click_xpath(f'//mat-option[contains(., "{city1}") and not(contains(., "Consulate")) and not(contains(., "Embassy")) and not(contains(., "Embassy-"))]')
+        sb.click_xpath(f'//mat-option[not(contains(., "Consulate")) and not(contains(., "Embassy")) and not(contains(., "Embassy-Astana")) and contains(., "{city1}")]')
         sb.sleep(5)
         #sb.cdp.click('mat-select:contains("appointment category")')
         cat_el.click()
