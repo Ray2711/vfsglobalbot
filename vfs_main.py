@@ -4,7 +4,7 @@ from random_email import (get_random_email, get_password)
 from captcha import cf_manual_solver
 
 def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
-    with SB(uc=True, headless2=True) as sb:
+    with SB(uc=True, headless2=False) as sb:
         url = link
         login = get_random_email()
         password = get_password()

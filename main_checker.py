@@ -4,26 +4,15 @@ import time
 from send_msg import send_telegram_message
 
 def run_scripts(scripts_folder):
-    if not os.path.exists(scripts_folder):
-        send_telegram_message(f"Scripts folder does not exist: {scripts_folder}")
-        return
-
-    scripts = [f for f in os.listdir(scripts_folder) if f.endswith('.py') or f.endswith('.sh')]
+    scripts = [f for f in os.listdir(scripts_folder) if f.endswith('.py') and f.startswith("vfs_") and not f.endswith('main.py')]
 
     for script in scripts:
         script_path = os.path.join(scripts_folder, script)
         try:
             if script.endswith('.py'):
-                result = subprocess.run(['python', script_path], capture_output=True, text=True)
-            else:  # Assume .sh or other executable
-                result = subprocess.run([script_path], capture_output=True, text=True)
-
-            if result.returncode != 0:
-                error_msg = f"Critical error in {script}: {result.stderr}"
-                send_telegram_message(error_msg)
+                os.system('python ' +script_path)
         except Exception as e:
-            error_msg = f"Critical error while running {script}: {str(e)}"
-            send_telegram_message(error_msg)
+            print("shit",e)
 
 def switch_wireguard(wg_folder):
     if not os.path.exists(wg_folder):
@@ -44,7 +33,7 @@ def switch_wireguard(wg_folder):
             send_telegram_message(f"Unexpected error in WireGuard switch: {str(e)}")
 
 def main():
-    scripts_folder = './scripts'  # Replace with your actual folder path
+    scripts_folder = '.'  # Replace with your actual folder path
     wg_folder = './wg_configs'     # Replace with your actual folder path
 
     while True:
