@@ -2,7 +2,7 @@ from seleniumbase import SB
 from send_msg import send_telegram_message
 from random_email import (get_random_email, get_password)
 from captcha import cf_manual_solver
-with SB(uc=True) as sb:
+with SB(uc=True, headless2=True) as sb:
     url = "https://visa.vfsglobal.com/kaz/en/che/login"
     login = get_random_email()
     password = get_password()

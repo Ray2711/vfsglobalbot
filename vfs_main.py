@@ -4,7 +4,7 @@ from random_email import (get_random_email, get_password)
 from captcha import cf_manual_solver
 
 def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
-    with SB(uc=True) as sb:
+    with SB(uc=True, headless2=True) as sb:
         url = link
         login = get_random_email()
         password = get_password()
@@ -32,7 +32,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
         #Select city 1
         app_el.click()
         sb.sleep(1)
-        sb.cdp.click(f'mat-option:contains("{city1}"):not(:contains("Consulate"))')
+        #sb.cdp.click(f'mat-option:contains("{city1}"):not(:contains("Consulate")):not(:contains("Embassy"))')
+        sb.click_xpath(f'//mat-option[contains(., "{city1}") and not(contains(., "Consulate")) and not(contains(., "Embassy")) and not(contains(., "Embassy-"))]')
         sb.sleep(5)
         #sb.cdp.click('mat-select:contains("appointment category")')
         cat_el.click()
