@@ -3,9 +3,10 @@ from send_msg import send_telegram_message
 from random_email import (get_random_email, get_password)
  
 
-def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
+def checkdates(link,city1,city2,abb1,abb2) -> None:
     with SB(uc=True, headless2=False) as sb:
-        url = link
+        #url = link
+        url = "https://kz-appointment.visametric.com/kz"
         login = get_random_email()
         password = get_password()
 
