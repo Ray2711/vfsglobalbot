@@ -12,11 +12,12 @@ def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
         
 
         sb.activate_cdp_mode(url)
+        sb.set_window_size(1280,720)
         sb.sleep(15)
         sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
         ##CLOUDFLARE 
-        cf_manual_solver(sb)
-
+        #cf_manual_solver(sb)
+        sb.uc_gui_click_captcha()
         ##END CLOUDFLARE
         sb.sleep(1)
         sb.cdp.press_keys("#email", login)
