@@ -1,9 +1,9 @@
 from seleniumbase import SB
-from send_msg import send_telegram_message
+from send_msg import (send_telegram_message, send_telegram_message_ping)
 from random_email import (get_random_email, get_password)
  
 
-def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
+def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
     with SB(uc=True, headless2=False) as sb:
         url = link
         login = get_random_email()
@@ -64,8 +64,11 @@ def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
         sb.sleep(1)
         dates = sb.cdp.get_text("div.border-info")
         #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'application')]") + "\n"+dates)
-        send_telegram_message(abb1 +"\n" +dates)
         
+        if isImportant:
+            send_telegram_message_ping(abb1 +"\n" +dates)
+        else:
+            send_telegram_message(abb1 +"\n" +dates)
         #Select city 2
         app_el.click()
         sb.sleep(1)
@@ -98,8 +101,10 @@ def vfs_checkdates(link,city1,city2,abb1,abb2) -> None:
                 print(f"Failed to select option '{option}': {e}")
         sb.sleep(1)
         dates = sb.cdp.get_text("div.border-info")
-        #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'application')]") + "\n"+dates)
-        send_telegram_message(abb2 +"\n" +dates)
-    
+        
+        if isImportant:
+            send_telegram_message_ping(abb1 +"\n" +dates)
+        else:
+            send_telegram_message(abb1 +"\n" +dates)
 
 
