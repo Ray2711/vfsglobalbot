@@ -1,5 +1,6 @@
 from seleniumbase import SB
 from send_msg import send_telegram_message
+from solver2captcha import solveCaptcha
 
 def visam() -> None:
     with SB(uc=True, headless2=False) as sb:
@@ -9,7 +10,26 @@ def visam() -> None:
         sb.set_window_size(1280,720)
         sb.uc_gui_click_captcha()
         sb.sleep(4)
-        #sb.wait_for_element_visible("img.imageCaptcha")
-        print("aboba")
-        print(sb.cdp.get_page_source())
-        sb.sleep(30)
+        sb.wait_for_element_visible("img.imageCaptcha")
+        imgsrc = sb.get_attribute("img.imageCaptcha", "src")
+        solve = solveCaptcha(imgsrc)
+        
+        sb.type('#mailConfirmCodeControl', solve)
+        sb.click("#confirmationbtn")
+        sb.sleep(3)
+        sb.select_option_by_text("#country", "Schengen Visa",timeout=5)
+        sb.select_option_by_text("#visitingcountry", "Germany",timeout=5)
+        sb.select_option_by_text("#city", "Almaty",timeout=5)
+        sb.select_option_by_text("#office", "Almaty",timeout=5)
+        sb.select_option_by_text("#officetype", "NORMAL",timeout=5)
+        sb.select_option_by_index("#totalPerson", 1,timeout=5)
+        dates = sb.cdp.get_text("#drs")
+        #print(dates)
+        send_telegram_message("Гер Алм " + dates)
+        sb.select_option_by_text("#city", "Astana",timeout=5)
+        sb.select_option_by_text("#office", "Astana",timeout=5)
+        sb.select_option_by_text("#officetype", "NORMAL",timeout=5)
+        sb.select_option_by_index("#totalPerson", 1,timeout=5)
+        dates = sb.cdp.get_text("#drs")
+       # print(dates)
+        send_telegram_message("Гер Аст " + dates)
