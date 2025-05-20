@@ -39,7 +39,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
         #sb.cdp.click('mat-select:contains("appointment category")')
         cat_el.click()
         sb.sleep(1)
-        options = ["others", "Short", "Visa C", "Visa" ]
+        options = ["others", "Short", "Visa C", "Visa", "Czech_Kazakhstan" ]
 
         for option in options:
             try:
@@ -77,7 +77,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
         #sb.cdp.click('mat-select:contains("appointment category")')
         cat_el.click()
         sb.sleep(1)
-        options = ["others", "Short", "Visa C" ]
+        options = ["others", "Short", "Visa C","Czech_Kazakhstan" ]
 
         for option in options:
             try:
@@ -90,7 +90,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
         sb.sleep(5)
         #sb.cdp.click('mat-select:contains("sub")')
         sub_el.click()
-        subs = ["Tourist", "Short", "Other", "other", "Visa C" ]
+        subs = ["Tourist", "Short", "Other", "other", "Visa C" , "Schengen" ]
 
         for option in subs:
             try:
