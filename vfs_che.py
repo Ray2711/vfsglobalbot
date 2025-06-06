@@ -14,7 +14,6 @@ with SB(uc=True, headless2=False) as sb:
     sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
     ##CLOUDFLARE 
     sb.uc_gui_click_captcha()
-
     ##END CLOUDFLARE
     sb.sleep(5)
     sb.cdp.press_keys("#email", login)
