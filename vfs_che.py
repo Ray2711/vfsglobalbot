@@ -1,5 +1,5 @@
 from seleniumbase import SB
-from send_msg import send_telegram_message
+from send_msg import send_telegram_message, send_to_db
 from random_email import (get_random_email, get_password)
  
 with SB(uc=True, headless2=False) as sb:
@@ -37,6 +37,7 @@ with SB(uc=True, headless2=False) as sb:
     sb.sleep(5)
     dates = sb.cdp.get_text("div.border-info")
     send_telegram_message("Шве Алм " +"\n" +dates)
+    send_to_db("Шве Алм  " +dates )
     sb.sleep(5)
     sb.cdp.click('mat-select:contains("Application Ce")')
     sb.sleep(1)
@@ -52,5 +53,6 @@ with SB(uc=True, headless2=False) as sb:
     sb.sleep(5)
     dates = sb.cdp.get_text("div.border-info")
     send_telegram_message("Шве Аст " +"\n" +dates)
+    send_to_db("Шве Аст  " +dates )
 
 

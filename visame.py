@@ -1,5 +1,5 @@
 from seleniumbase import SB
-from send_msg import send_telegram_message
+from send_msg import send_telegram_message, send_to_db
 from solver2captcha import solveCaptcha
 
 def visam() -> None:
@@ -26,6 +26,7 @@ def visam() -> None:
         dates = sb.cdp.get_text("#drs")
         #print(dates)
         send_telegram_message("Гер Алм " + dates)
+        send_to_db("Гер Алм " + dates)
         sb.select_option_by_text("#city", "Astana",timeout=5)
         sb.select_option_by_text("#office", "Astana",timeout=5)
         sb.select_option_by_text("#officetype", "NORMAL",timeout=5)
@@ -33,3 +34,4 @@ def visam() -> None:
         dates = sb.cdp.get_text("#drs")
        # print(dates)
         send_telegram_message("Гер Аст " + dates)
+        send_to_db("Гер Аст " + dates)

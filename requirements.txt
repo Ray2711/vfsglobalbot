@@ -1,3 +1,4 @@
 seleniumbase
 requests
 dotenv
+firebase_admin

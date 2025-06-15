@@ -4,6 +4,8 @@ import os
 import re
 from dotenv import load_dotenv
 
+from send_to_fb import send_to_fb
+
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -80,7 +82,4 @@ def send_to_db(text :str):
         dates = match.group()
     else:
         dates = "No dates"
-    url = f"{DB_URL}"
-    payload = {"appointmentCenter": text[:7], "closestAppointment":dates}
-    response = requests.post(url, json=payload, headers={'Content-Type': 'application/json', 'x-api-key': DB_KEY })
-    return response.json()
+    send_to_fb(text[:7],dates)

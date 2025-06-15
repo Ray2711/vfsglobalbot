@@ -1,6 +1,6 @@
   
 from seleniumbase import SB
-from send_msg import send_telegram_message
+from send_msg import send_telegram_message, send_to_db
 from random_email import (get_random_email, get_password)
  
 with SB(uc=True, headless2=False) as sb:
@@ -41,6 +41,7 @@ with SB(uc=True, headless2=False) as sb:
     dates = sb.cdp.get_text("div.border-info")
     #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Almaty')]") +"\n" +dates)
     send_telegram_message("Вен Алм " +"\n" +dates)
+    send_to_db("Вен Алм " +"\n" +dates)
 
 
 

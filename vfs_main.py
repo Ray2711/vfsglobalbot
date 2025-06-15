@@ -3,7 +3,7 @@ from send_msg import (send_telegram_message, send_telegram_message_ping, send_to
 from random_email import (get_random_email, get_password)
  
 
-def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
+def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2: bool) -> None:
     with SB(uc=True, headless2=False) as sb:
         url = link
         login = get_random_email()
@@ -105,11 +105,12 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
         sb.sleep(1)
         dates = sb.cdp.get_text("div.border-info")
         
-        if isImportant:
+        if isImportant2:
             send_telegram_message_ping(abb2 +"\n" +dates)
         else:
             send_telegram_message(abb2 +"\n" +dates)
         send_to_db(abb2 +"\n" +dates)
+        
 
 
 
