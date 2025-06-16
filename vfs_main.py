@@ -1,4 +1,5 @@
 from seleniumbase import SB
+from csv_create import append_to_csv
 from send_msg import (send_telegram_message, send_telegram_message_ping, send_to_db)
 from random_email import (get_random_email, get_password)
  
@@ -72,6 +73,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
         else:
             send_telegram_message(abb1 +"\n" +dates)
         send_to_db(abb1 +"\n" +dates)
+        append_to_csv(abb1,dates)
         #Select city 2
         app_el.click()
         sb.sleep(1)
@@ -110,7 +112,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
         else:
             send_telegram_message(abb2 +"\n" +dates)
         send_to_db(abb2 +"\n" +dates)
-        
+        append_to_csv(abb2,dates)
 
 
 

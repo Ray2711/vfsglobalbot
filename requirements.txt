@@ -2,3 +2,5 @@ seleniumbase
 requests
 dotenv
 firebase_admin
+pandas
+matplotlib

@@ -1,5 +1,7 @@
   
+from re import A
 from seleniumbase import SB
+from csv_create import append_to_csv
 from send_msg import send_telegram_message, send_to_db
 from random_email import (get_random_email, get_password)
  
@@ -42,6 +44,7 @@ with SB(uc=True, headless2=False) as sb:
     #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'Almaty')]") +"\n" +dates)
     send_telegram_message("Вен Алм " +"\n" +dates)
     send_to_db("Вен Алм " +"\n" +dates)
+    append_to_csv("Вен Алм", dates)
 
 
 
