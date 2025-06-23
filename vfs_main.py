@@ -9,6 +9,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
         url = link
         login = get_random_email()
         password = get_password()
+        sb.execute_cdp_cmd("Network.clearBrowserCache", {})
 
         
 
