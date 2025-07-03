@@ -4,7 +4,7 @@ import os
 import re
 from dotenv import load_dotenv
 
-from send_to_fb import send_to_fb
+from send_to_fb import send_to_firestore
 
 load_dotenv()
 
@@ -82,4 +82,4 @@ def send_to_db(text :str):
         dates = match.group()
     else:
         dates = "No dates"
-    send_to_fb(text[:7],dates)
+    send_to_firestore("appointment_dates", "VFS",text[:7],dates)
