@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+import datetime
 from send_msg import send_telegram_message
 
 def run_scripts(scripts_folder):
@@ -33,13 +34,21 @@ def switch_wireguard(wg_folder):
             send_telegram_message(f"Unexpected error in WireGuard switch: {str(e)}")
 
 def main():
+    
     scripts_folder = '.'  # Replace with your actual folder path
     wg_folder = './wg_configs'     # Replace with your actual folder path
 
     while True:
         run_scripts(scripts_folder)
         #switch_wireguard(wg_folder)
-        time.sleep(3600)  # Sleep for 60 minutes (3600 seconds)
+        now = datetime.datetime.now()
+        # Calculate seconds until next :00 or :30
+        next_minute = 30 if now.minute < 30 else 60
+        next_time = now.replace(minute=next_minute % 60, second=0, microsecond=0)
+        if next_minute == 60:
+            next_time = next_time + datetime.timedelta(hours=1)
+        sleep_seconds = (next_time - now).total_seconds()
+        time.sleep(sleep_seconds)
 
 if __name__ == '__main__':
     main()
