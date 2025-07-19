@@ -10,7 +10,7 @@ load_dotenv()
 
 def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2: bool) -> None:
     try:
-        with SB(uc=True, headless2=False, test=True, locale="en") as sb:
+        with SB(uc=True, locale="en") as sb:
             url = link
             login = get_random_email()
             password = get_password()
