@@ -14,7 +14,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             url = link
             login = get_random_email()
             password = get_password()
-            REPORTERRORS = os.getenv("REPORTERRORS").lower() == "true"
+            REPORTERRORS = os.getenv("REPORTERRORS") == "True"
             #sb.execute_cdp_cmd("Network.clearBrowserCache", {})
 
             
