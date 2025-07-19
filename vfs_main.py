@@ -2,15 +2,20 @@ from seleniumbase import SB
 from csv_create import append_to_csv
 from send_msg import (send_telegram_message, send_telegram_message_error, send_telegram_message_ping, send_to_db)
 from random_email import (get_random_email, get_password)
- 
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2: bool) -> None:
     try:
-        with SB(uc=True, headless2=False) as sb:
+        with SB(uc=True, headless2=False, test=True, locale="en") as sb:
             url = link
             login = get_random_email()
             password = get_password()
-            sb.execute_cdp_cmd("Network.clearBrowserCache", {})
+            REPORTERRORS = os.getenv("REPORTERRORS").lower() == "true"
+            #sb.execute_cdp_cmd("Network.clearBrowserCache", {})
 
             
 
@@ -116,6 +121,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             send_to_db(abb2 +"\n" +dates)
             append_to_csv(abb2,dates)
     except Exception as e:
-        send_telegram_message_error(f"Error in : {link} : \n Couldn't get dates " )
+        if(REPORTERRORS):
+            send_telegram_message_error(f"Error in : {link} : \n Couldn't get dates " )
 
 

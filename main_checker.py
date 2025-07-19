@@ -43,7 +43,8 @@ def main():
         #switch_wireguard(wg_folder)
         now = datetime.datetime.now()
         # Calculate seconds until next :00 or :30
-        next_minute = 30 if now.minute < 30 else 60
+       # next_minute = 30 if now.minute < 30 else 60
+        next_minute = 60
         next_time = now.replace(minute=next_minute % 60, second=0, microsecond=0)
         if next_minute == 60:
             next_time = next_time + datetime.timedelta(hours=1)
