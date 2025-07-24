@@ -44,7 +44,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
                     time.sleep(random.uniform(0.05, 0.15))
                     pyautogui.click()
-                    sb.sleep(5)
+                    sb.sleep(10)
                     sb.click(".btn-brand-orange")
                     sb.sleep(10)
                     loggedin = True

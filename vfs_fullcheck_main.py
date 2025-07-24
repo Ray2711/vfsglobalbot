@@ -25,17 +25,34 @@ async def task(link,city1,abb1,country):
                 sb.wait_for_element_visible("#onetrust-accept-btn-handler")
                 sb.cdp.click("#onetrust-accept-btn-handler")
                 sb.wait_for_element_visible("#email")
-                ##CLOUDFLARE 
-                sb.uc_gui_click_captcha()
-                pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
-                time.sleep(random.uniform(0.05, 0.15))
-                pyautogui.click()
-                ##END CLOUDFLARE
-                sb.cdp.press_keys("#email", login)
-                sb.cdp.press_keys("#password", password)
+            ##CLOUDFLARE 
+            #cf_manual_solver(sb)
+            
+            ##END CLOUDFLARE
                 sb.sleep(1)
-                sb.click(".btn-brand-orange")
-                sb.sleep(10)
+                sb.maximize_window()
+                loggedin = False
+        
+                while(loggedin == False):
+                        try:
+                                sb.cdp.press_keys("#email", login)
+                                sb.cdp.press_keys("#password", password)
+                                sb.sleep(6)
+                                #sb.minimize_window()
+                                sb.uc_gui_click_captcha()
+                                pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+                                time.sleep(random.uniform(0.05, 0.15))
+                                pyautogui.click()
+                                sb.sleep(5)
+                                sb.cdp.click(".btn-brand-orange")
+                                sb.sleep(10)
+                                loggedin = True
+                        except:
+                                sb.cdp.gui_click_element("a.c-brand-orange")
+                                pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+                                time.sleep(random.uniform(0.05, 0.15))
+                                pyautogui.click()
+                                sb.sleep(10)
                 sb.cdp.click('button:contains("Start New Booking")')
                 sb.sleep(5)
                 app_el = sb.cdp.find_element('mat-select:contains("pplication")')
