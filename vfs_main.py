@@ -28,10 +28,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
             ##CLOUDFLARE 
             #cf_manual_solver(sb)
-            sb.uc_gui_click_captcha()
-            pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
-            time.sleep(random.uniform(0.05, 0.15))
-            pyautogui.click()
+            
             ##END CLOUDFLARE
             sb.sleep(1)
             sb.maximize_window()
@@ -42,11 +39,19 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     sb.cdp.press_keys("#email", login)
                     sb.cdp.press_keys("#password", password)
                     sb.sleep(1)
+                    #sb.minimize_window()
+                    sb.uc_gui_click_captcha()
+                    pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+                    time.sleep(random.uniform(0.05, 0.15))
+                    pyautogui.click()
                     sb.click(".btn-brand-orange")
                     sb.sleep(10)
-                    #sb.minimize_window()
+                    loggedin = True
                 except:
                     sb.cdp.gui_click_element("a.c-brand-orange")
+                    pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+                    time.sleep(random.uniform(0.05, 0.15))
+                    pyautogui.click()
                     sb.sleep(10)
             
             sb.cdp.click('button:contains("Start New Booking")')
