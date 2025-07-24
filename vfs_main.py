@@ -6,6 +6,10 @@ from random_email import (get_random_email, get_password)
 from dotenv import load_dotenv
 import os
 
+import pyautogui
+import random
+import time
+
 load_dotenv()
 
 def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2: bool) -> None:
@@ -20,20 +24,30 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             
 
             sb.activate_cdp_mode(url)
-            sb.set_window_size(1280,720)
-            sb.sleep(15)
+            sb.sleep(10)
             sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
             ##CLOUDFLARE 
             #cf_manual_solver(sb)
             sb.uc_gui_click_captcha()
+            pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+            time.sleep(random.uniform(0.05, 0.15))
+            pyautogui.click()
             ##END CLOUDFLARE
             sb.sleep(1)
-            sb.cdp.press_keys("#email", login)
-            sb.cdp.press_keys("#password", password)
-            sb.sleep(1)
-            sb.click(".btn-brand-orange")
-            sb.sleep(10)
-            sb.minimize_window()
+            sb.maximize_window()
+            loggedin = False
+ 
+            while(loggedin == False):
+                try:
+                    sb.cdp.press_keys("#email", login)
+                    sb.cdp.press_keys("#password", password)
+                    sb.sleep(1)
+                    sb.click(".btn-brand-orange")
+                    sb.sleep(10)
+                    #sb.minimize_window()
+                except:
+                    sb.cdp.gui_click_element("a.c-brand-orange")
+                    sb.sleep(10)
             
             sb.cdp.click('button:contains("Start New Booking")')
             sb.sleep(5)
@@ -72,7 +86,18 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 except Exception as e:
                     print(f"Failed to select option '{option}': {e}")
             sb.sleep(1)
-            dates = sb.cdp.get_text("div.border-info")
+
+            dates = ""
+            try:
+                dates = sb.cdp.get_text("div.border-info")
+            except Exception as e:
+                dates = sb.cdp.get_text("mat-checkbox")
+                if(dates):
+                    send_to_db(abb1 +"\n" +"Waitlist Available")
+                send_telegram_message_error(abb1+ " " +dates)
+                print(e)
+
+            
             #send_telegram_message("Dates for Visa centre of " +sb.get_text("//mat-select[contains(., 'application')]") + "\n"+dates)
             
             if isImportant:
@@ -112,7 +137,14 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 except Exception as e:
                     print(f"Failed to select option '{option}': {e}")
             sb.sleep(1)
-            dates = sb.cdp.get_text("div.border-info")
+            try:
+                dates = sb.cdp.get_text("div.border-info")
+            except Exception as e:
+                dates = sb.cdp.get_text("mat-checkbox")
+                if(dates):
+                    send_to_db(abb2 +"\n" +"Waitlist Available")
+                send_telegram_message_error(abb2+ " " +dates)
+                print(e)
             
             if isImportant2:
                 send_telegram_message_ping(abb2 +"\n" +dates)

@@ -9,9 +9,8 @@ PASSWORD = os.getenv("PASSWORD")
 
 #Assuming all password are the same.
 # Enter your emails here, if you have more than one
-EMAILS = [
-    EMAIL
-]
+EMAILS = [email.strip() for email in EMAIL.split(',')]
+# OH NOOO I PUSHED MY EMAILS ON MAIN OH NOOOOO idk atp 
 
 def get_random_email():
     """
