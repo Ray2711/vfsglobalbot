@@ -38,12 +38,13 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 try:
                     sb.cdp.press_keys("#email", login)
                     sb.cdp.press_keys("#password", password)
-                    sb.sleep(1)
+                    sb.sleep(6)
                     #sb.minimize_window()
                     sb.uc_gui_click_captcha()
                     pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
                     time.sleep(random.uniform(0.05, 0.15))
                     pyautogui.click()
+                    sb.sleep(5)
                     sb.click(".btn-brand-orange")
                     sb.sleep(10)
                     loggedin = True
