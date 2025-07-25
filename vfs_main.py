@@ -47,6 +47,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     sb.sleep(10)
                     sb.click(".btn-brand-orange")
                     sb.sleep(10)
+                    sb.cdp.click('button:contains("Start New Booking")')
                     loggedin = True
                 except:
                     sb.cdp.gui_click_element("a.c-brand-orange")
@@ -55,7 +56,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     pyautogui.click()
                     sb.sleep(10)
             
-            sb.cdp.click('button:contains("Start New Booking")')
+            
             sb.sleep(5)
             app_el = sb.cdp.find_element('mat-select:contains("pplication")')
             cat_el = sb.cdp.find_element('mat-select:contains("appointment category")')
@@ -159,6 +160,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             send_to_db(abb2 +"\n" +dates)
             append_to_csv(abb2,dates)
     except Exception as e:
+        print(e)
         if(REPORTERRORS):
             send_telegram_message_error(f"Error in : {link} : \n Couldn't get dates " )
 

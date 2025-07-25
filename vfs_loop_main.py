@@ -1,7 +1,9 @@
 from seleniumbase import SB
 from send_msg import (send_telegram_message, send_telegram_message_ping, send_to_db)
 from random_email import (get_random_email, get_password)
- 
+import pyautogui
+import random
+import time
 
 def vfs_checkdates_loop(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
     with SB(uc=True, headless2=False) as sb:
@@ -17,17 +19,33 @@ def vfs_checkdates_loop(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
         sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
         ##CLOUDFLARE 
         #cf_manual_solver(sb)
-        sb.uc_gui_click_captcha()
-        ##END CLOUDFLARE
-        sb.sleep(1)
-        sb.cdp.press_keys("#email", login)
-        sb.cdp.press_keys("#password", password)
-        sb.sleep(1)
-        sb.click(".btn-brand-orange")
-        sb.sleep(10)
-        sb.minimize_window()
+        sb.maximize_window()
+        loggedin = False
+
+        while(loggedin == False):
+            try:
+                sb.cdp.press_keys("#email", login)
+                sb.cdp.press_keys("#password", password)
+                sb.sleep(6)
+                #sb.minimize_window()
+                sb.uc_gui_click_captcha()
+                pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+                time.sleep(random.uniform(0.05, 0.15))
+                pyautogui.click()
+                sb.sleep(10)
+                sb.click(".btn-brand-orange")
+                sb.sleep(10)
+                sb.cdp.click('button:contains("Start New Booking")')
+                loggedin = True
+            except:
+                sb.cdp.gui_click_element("a.c-brand-orange")
+                pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+                time.sleep(random.uniform(0.05, 0.15))
+                pyautogui.click()
+                sb.sleep(10)
+
         while(True):
-            sb.cdp.click('button:contains("Start New Booking")')
+            
             sb.sleep(5)
             app_el = sb.cdp.find_element('mat-select:contains("pplication")')
             cat_el = sb.cdp.find_element('mat-select:contains("appointment category")')
@@ -113,6 +131,7 @@ def vfs_checkdates_loop(link,city1,city2,abb1,abb2, isImportant: bool) -> None:
             sb.cdp.click('#navbarDropdown',timeout=3)
             sb.cdp.click('a:contains("Dashboard")',timeout=3)
             sb.sleep(3)
+            sb.cdp.click('button:contains("Start New Booking")')
 
 
 

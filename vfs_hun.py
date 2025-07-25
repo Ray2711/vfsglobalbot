@@ -4,6 +4,10 @@ from seleniumbase import SB
 from csv_create import append_to_csv
 from send_msg import send_telegram_message, send_to_db
 from random_email import (get_random_email, get_password)
+import pyautogui
+import random
+import time
+
  
 with SB(uc=True, headless2=False) as sb:
     url = "https://visa.vfsglobal.com/kaz/en/hun/login"
@@ -15,17 +19,29 @@ with SB(uc=True, headless2=False) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(10)
     sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
-    ##CLOUDFLARE 
-    sb.uc_gui_click_captcha()
-
-    ##END CLOUDFLARE
-    sb.sleep(5)
-    sb.cdp.press_keys("#email", login)
-    sb.cdp.press_keys("#password", password)
-    sb.sleep(2)
-    sb.click(".btn-brand-orange")
-    sb.sleep(20)
-    sb.cdp.click('button:contains("Start New Booking")')
+    loggedin = False
+ 
+    while(loggedin == False):
+        try:
+            sb.cdp.press_keys("#email", login)
+            sb.cdp.press_keys("#password", password)
+            sb.sleep(6)
+            #sb.minimize_window()
+            sb.uc_gui_click_captcha()
+            pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+            time.sleep(random.uniform(0.05, 0.15))
+            pyautogui.click()
+            sb.sleep(10)
+            sb.click(".btn-brand-orange")
+            sb.sleep(10)
+            sb.cdp.click('button:contains("Start New Booking")')
+            loggedin = True
+        except:
+            sb.cdp.gui_click_element("a.c-brand-orange")
+            pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+            time.sleep(random.uniform(0.05, 0.15))
+            pyautogui.click()
+            sb.sleep(10)
     sb.sleep(5)
     sb.sleep(5)
     sb.cdp.click('mat-select:contains("Application Ce")')
