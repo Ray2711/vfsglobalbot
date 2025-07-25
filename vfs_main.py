@@ -33,8 +33,9 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             sb.sleep(1)
             sb.maximize_window()
             loggedin = False
+            tries = 0 
  
-            while(loggedin == False):
+            while(loggedin == False or tries < 10):
                 try:
                     sb.cdp.press_keys("#email", login)
                     sb.cdp.press_keys("#password", password)
@@ -49,6 +50,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     sb.sleep(10)
                     sb.cdp.click('button:contains("Start New Booking")')
                     loggedin = True
+                    tries += 1
                 except:
                     sb.cdp.gui_click_element("a.c-brand-orange")
                     pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
