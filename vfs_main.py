@@ -57,8 +57,9 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     time.sleep(random.uniform(0.05, 0.15))
                     pyautogui.click()
                     sb.sleep(10)
+                    login = get_random_email()
             
-            if(tries == 10):
+            if(tries >= 9):
                 send_telegram_message_error(abb1 + " could not log in. May be blocked")
             
             sb.sleep(5)
