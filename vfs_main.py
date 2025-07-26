@@ -35,7 +35,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             loggedin = False
             tries = 0 
  
-            while(loggedin == False or tries < 10):
+            while(loggedin == False and tries < 10):
                 try:
                     sb.cdp.press_keys("#email", login)
                     sb.cdp.press_keys("#password", password)
@@ -58,6 +58,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     pyautogui.click()
                     sb.sleep(10)
             
+            if(tries == 10):
+                send_telegram_message_error(abb1 + " could not log in. May be blocked")
             
             sb.sleep(5)
             app_el = sb.cdp.find_element('mat-select:contains("pplication")')
