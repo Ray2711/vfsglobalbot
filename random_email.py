@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 EMAIL = os.getenv("EMAIL")
+WAITLIST_EMAIL = os.getenv("WAITLIST_EMAIL")
 PASSWORD = os.getenv("PASSWORD")
 
 #Assuming all password are the same.
@@ -19,6 +20,12 @@ def get_random_email():
     if not EMAILS:
         raise ValueError("Email list is empty.")
     return random.choice(EMAILS)
+
+
+def get_waitlist_email():
+    if not WAITLIST_EMAIL:
+        raise ValueError("Waitlist email is empty.")
+    return WAITLIST_EMAIL
 
 def get_password():
     return PASSWORD

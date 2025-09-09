@@ -21,7 +21,7 @@ with SB(uc=True, headless2=False) as sb:
     sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
     loggedin = False
  
-    while(loggedin == False):
+    while(loggedin == False and tries < 10):
         try:
             sb.cdp.press_keys("#email", login)
             sb.cdp.press_keys("#password", password)
@@ -37,6 +37,7 @@ with SB(uc=True, headless2=False) as sb:
             sb.cdp.click('button:contains("Start New Booking")')
             loggedin = True
         except:
+            tries += 1
             sb.cdp.gui_click_element("a.c-brand-orange")
             pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
             time.sleep(random.uniform(0.05, 0.15))

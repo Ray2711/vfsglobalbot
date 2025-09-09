@@ -50,8 +50,9 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     sb.sleep(10)
                     sb.cdp.click('button:contains("Start New Booking")')
                     loggedin = True
-                    tries += 1
+                   
                 except:
+                    tries += 1
                     sb.cdp.gui_click_element("a.c-brand-orange")
                     pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
                     time.sleep(random.uniform(0.05, 0.15))
