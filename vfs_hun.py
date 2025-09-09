@@ -17,8 +17,9 @@ with SB(uc=True, headless2=False) as sb:
     
 
     sb.activate_cdp_mode(url)
-    sb.sleep(10)
-    sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
+    sb.sleep(15)
+    sb.wait_for_element("#onetrust-accept-btn-handler")
+    sb.cdp.click("#onetrust-accept-btn-handler")
     sb.sleep(1)
     sb.maximize_window()
     loggedin = False

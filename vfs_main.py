@@ -25,7 +25,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
 
             sb.activate_cdp_mode(url)
             sb.sleep(15)
-            sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
+            sb.wait_for_element("#onetrust-accept-btn-handler")
+            sb.cdp.click("#onetrust-accept-btn-handler")
             ##CLOUDFLARE 
             #cf_manual_solver(sb)
             
