@@ -18,6 +18,7 @@ with SB(uc=True, headless2=False) as sb:
     sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
     sb.maximize_window()
     loggedin = False
+    tries = 0
  
     while(loggedin == False and tries < 10):
         try:
