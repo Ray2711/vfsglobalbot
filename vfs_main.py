@@ -24,7 +24,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             
 
             sb.activate_cdp_mode(url)
-            sb.sleep(10)
+            sb.sleep(15)
             sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
             ##CLOUDFLARE 
             #cf_manual_solver(sb)
@@ -34,16 +34,18 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             sb.maximize_window()
             loggedin = False
             tries = 0 
+            sb.uc_gui_click_captcha()
+            pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+            time.sleep(random.uniform(0.05, 0.15))
+            pyautogui.click()
  
             while(loggedin == False and tries < 10):
                 try:
                     sb.cdp.press_keys("#email", login)
                     sb.cdp.press_keys("#password", password)
-                    sb.sleep(6)
+                    sb.sleep(2)
                     #sb.minimize_window()
-                    sb.uc_gui_click_captcha()
-                    pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
-                    time.sleep(random.uniform(0.05, 0.15))
+                    
                     pyautogui.click()
                     sb.sleep(10)
                     sb.click(".btn-brand-orange")
@@ -52,12 +54,10 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     loggedin = True
                    
                 except:
+                    print("1")
                     tries += 1
-                    sb.cdp.gui_click_element("a.c-brand-orange")
-                    pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
-                    time.sleep(random.uniform(0.05, 0.15))
-                    pyautogui.click()
-                    sb.sleep(10)
+                    sb.open(url)
+                    sb.sleep(3)
                     login = get_random_email()
             
             if(tries >= 9):
@@ -70,8 +70,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             #Select city 1
             app_el.click()
             sb.sleep(1)
-            #sb.cdp.click(f'mat-option:contains("{city1}"):not(:contains("Consulate")):not(:contains("Embassy"))')
-            sb.click_xpath(f'//mat-option[not(contains(., "Consulate")) and not(contains(., "Embassy")) and not(contains(., "Embassy-Astana")) and contains(., "{city1}")]')
+            sb.cdp.click(f'mat-option:contains("{city1}"):not(:contains("Consulate")):not(:contains("Embassy")):not(:contains("Embassy-Astana"))')
+            #sb.click_xpath(f'//mat-option[not(contains(., "Consulate")) and not(contains(., "Embassy")) and not(contains(., "Embassy-Astana")) and contains(., "{city1}")]')
             sb.sleep(5)
             #sb.cdp.click('mat-select:contains("appointment category")')
             cat_el.click()

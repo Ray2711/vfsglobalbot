@@ -16,32 +16,36 @@ with SB(uc=True, headless2=False) as sb:
     sb.activate_cdp_mode(url)
     sb.sleep(10)
     sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
+        ##END CLOUDFLARE
+    sb.sleep(1)
     sb.maximize_window()
     loggedin = False
-    tries = 0
- 
+    tries = 0 
+    sb.uc_gui_click_captcha()
+    pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
+    time.sleep(random.uniform(0.05, 0.15))
+    pyautogui.click()
+
     while(loggedin == False and tries < 10):
         try:
             sb.cdp.press_keys("#email", login)
             sb.cdp.press_keys("#password", password)
-            sb.sleep(6)
+            sb.sleep(2)
             #sb.minimize_window()
-            sb.uc_gui_click_captcha()
-            pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
-            time.sleep(random.uniform(0.05, 0.15))
+            
             pyautogui.click()
             sb.sleep(10)
             sb.click(".btn-brand-orange")
             sb.sleep(10)
             sb.cdp.click('button:contains("Start New Booking")')
             loggedin = True
+            
         except:
+            print("1")
             tries += 1
-            sb.cdp.gui_click_element("a.c-brand-orange")
-            pyautogui.moveTo(pyautogui.position().x, pyautogui.position().y - 10, duration=random.uniform(0.1, 0.3), tween=pyautogui.easeOutQuad)
-            time.sleep(random.uniform(0.05, 0.15))
-            pyautogui.click()
-            sb.sleep(10)
+            sb.open(url)
+            sb.sleep(3)
+            login = get_random_email()
     sb.sleep(5) 
     sb.cdp.click('mat-select:contains("Application Ce")')
     sb.sleep(1)
