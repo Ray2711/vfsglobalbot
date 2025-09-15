@@ -11,6 +11,8 @@ import pyautogui
 import random
 import time
 
+from send_to_fb import send_to_firestore
+
 load_dotenv()
 
 
@@ -26,7 +28,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             
 
             
-
+            
             sb.activate_cdp_mode(url)
             sb.sleep(10)
             sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
@@ -80,24 +82,20 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     
                     
                     # 2. All numbers inside divs with class "date-availiable"
-                    numbers = sb.find_elements(".date-availiable")
-                
-                    #numbers.sort()
-                    print(numbers)
-                    sb.sleep(20)
-
-                    # 3. Full list as one string
-                    all_dates_str = "\n".join(
-                        f"{day:02d} {month_name} {year}" for day in numbers
-                    )
-
-                    # 4. First date as DD-MM-YYYY
-                    first_date = f"{numbers[0]:02d}-{month_num:02d}-{year}" \
-                        if numbers else None
+                    available_dates_elements = sb.find_elements('.date-availiable')
+                    available_dates = []
+                    for el in available_dates_elements:
+                        date_attr = el.get_attribute('data-date')
+                        if date_attr:
+                            available_dates.append(f"{date_attr[-2:]}{month_name}{year}")
+                    available_dates_str = "Available Dates: " + ", ".join(available_dates)
+                    print(available_dates_str)
+                    send_telegram_message_error(abb1 + " "+available_dates_str)
+                    send_to_firestore("list_appointment_dates","vfs",abb1,available_dates_str)
 
                     # Variables now ready for use
-                    print(all_dates_str)
-                    print(first_date)
+                    print(available_dates_str)
+                    print(available_dates_str[0])
                 except Exception as e:
                     print(e)
                     send_telegram_message_error(f" {abb1} no dates " )
