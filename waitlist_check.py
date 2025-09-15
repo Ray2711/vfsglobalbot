@@ -74,28 +74,25 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 try:
                     print(f'try {i}')
                     sb.sleep(10)
-                                # 1. Month & Year from the header
+                    # 1. Month & Year from the header
                     header_text = sb.get_text("h2.fc-toolbar-title").strip()
                     month_name, year = header_text.split()
                     month_num = datetime.strptime(month_name, "%B").month
                     print(header_text)
-                    
-                    
                     # 2. All numbers inside divs with class "date-availiable"
                     available_dates_elements = sb.find_elements('.date-availiable')
                     available_dates = []
+                    dates_to_db = []
                     for el in available_dates_elements:
                         date_attr = el.get_attribute('data-date')
                         if date_attr:
-                            available_dates.append(f"{date_attr[-2:]}{month_name}{year}")
+                            available_dates.append(f"{date_attr[-2:]} {month_name} {year}")
+                            dates_to_db.append(date_attr)
                     available_dates_str = "Available Dates: " + ", ".join(available_dates)
                     print(available_dates_str)
                     send_telegram_message_error(abb1 + " "+available_dates_str)
-                    send_to_firestore("list_appointment_dates","vfs",abb1,available_dates_str)
+                    send_to_firestore("list_appointment_dates","vfs",abb1,dates_to_db)
 
-                    # Variables now ready for use
-                    print(available_dates_str)
-                    print(available_dates_str[0])
                 except Exception as e:
                     print(e)
                     send_telegram_message_error(f" {abb1} no dates " )
