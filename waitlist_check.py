@@ -55,8 +55,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     sb.sleep(10)
                     sb.click(".btn-brand-orange")
                     sb.sleep(10)
-                    card = sb.cdp.find_element(f'div:contains("{group_id1}") span:contains(" Book Now ")')
-                    card.click()
+                    sb.cdp.find_element('button:contains("Start New Booking")')
+                    
                     loggedin = True
                    
                 except Exception as e:
@@ -69,7 +69,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             
             if(tries >= 9):
                 send_telegram_message_error(abb1 + " could not log in. May be blocked")
-
+            card = sb.cdp.find_element(f'div:contains("{group_id1}") span:contains(" Book Now ")')
+            card.click()
             for i in range(2):
                 try:
                     print(f'try {i}')
@@ -92,15 +93,46 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     print(available_dates_str)
                     send_telegram_message_error(abb1 + " "+available_dates_str)
                     send_to_firestore("list_appointment_dates","vfs",abb1,dates_to_db)
-
+                    append_to_csv(abb1,dates_to_db)
                 except Exception as e:
                     print(e)
                     send_telegram_message_error(f" {abb1} no dates " )
                     sb.click(".fc-next-button")
+            sb.cdp.click('#navbarDropdown',timeout=3)
+            sb.cdp.click('a:contains("Dashboard")',timeout=3)
+            sb.sleep(10)
+            card = sb.cdp.find_element(f'div:contains("{group_id2}") span:contains(" Book Now ")')
+            card.click()
+            for i in range(2):
+                try:
+                    print(f'try {i}')
+                    sb.sleep(10)
+                    # 1. Month & Year from the header
+                    header_text = sb.get_text("h2.fc-toolbar-title").strip()
+                    month_name, year = header_text.split()
+                    month_num = datetime.strptime(month_name, "%B").month
+                    print(header_text)
+                    # 2. All numbers inside divs with class "date-availiable"
+                    available_dates_elements = sb.find_elements('.date-availiable')
+                    available_dates = []
+                    dates_to_db = []
+                    for el in available_dates_elements:
+                        date_attr = el.get_attribute('data-date')
+                        if date_attr:
+                            available_dates.append(f"{date_attr[-2:]} {month_name} {year}")
+                            dates_to_db.append(date_attr)
+                    available_dates_str = "Available Dates: " + ", ".join(available_dates)
+                    print(available_dates_str)
+                    send_telegram_message_error(abb2 + " "+available_dates_str)
+                    send_to_firestore("list_appointment_dates","vfs",abb2,dates_to_db)
+                    append_to_csv(abb2,dates_to_db)
+                except Exception as e:
+                    print(e)
+                    send_telegram_message_error(f" {abb2} no dates " )
+                    sb.click(".fc-next-button")
             
             
-            #send_to_db(abb2 +"\n" +dates)
-            #append_to_csv(abb2,dates)
+            
     except Exception as e:
         print(e)
         if(REPORTERRORS):
