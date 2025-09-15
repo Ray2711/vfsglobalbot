@@ -77,15 +77,14 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     month_name, year = header_text.split()
                     month_num = datetime.strptime(month_name, "%B").month
                     print(header_text)
-                    sb.sleep(20)
+                    
                     
                     # 2. All numbers inside divs with class "date-availiable"
-                    numbers = [
-                        int(el.text)
-                        for el in sb.find_elements(".date-availiable")
-                    ]
-                    numbers.sort()
+                    numbers = sb.find_elements(".date-availiable")
+                
+                    #numbers.sort()
                     print(numbers)
+                    sb.sleep(20)
 
                     # 3. Full list as one string
                     all_dates_str = "\n".join(
@@ -102,6 +101,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 except Exception as e:
                     print(e)
                     send_telegram_message_error(f" {abb1} no dates " )
+                    sb.click(".fc-next-button")
             
             
             #send_to_db(abb2 +"\n" +dates)
