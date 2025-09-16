@@ -71,7 +71,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 send_telegram_message_error(abb1 + " could not log in. May be blocked")
             card = sb.cdp.find_element(f'div:contains("{group_id1}") span:contains(" Book Now ")')
             card.click()
-            for i in range(2):
+            for i in range(1):
                 try:
                     print(f'try {i}')
                     sb.sleep(10)
