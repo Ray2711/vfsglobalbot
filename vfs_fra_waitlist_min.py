@@ -1,4 +1,7 @@
   
 from waitlist_check import vfs_checkdates
-
-vfs_checkdates("https://visa.vfsglobal.com/kaz/en/fra/login","Almaty","Astana","Фра Алм","Фра Аст", False, False, "XYZ22655678141", "XYZ22680919682")
+from dotenv import load_dotenv
+import os
+load_dotenv()
+EMAIL = os.getenv("WAITLIST2_EMAIL")
+vfs_checkdates("https://visa.vfsglobal.com/kaz/en/fra/login","Фра Алм", False, EMAIL, "XYZ22687824985")

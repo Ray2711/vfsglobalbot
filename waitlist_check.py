@@ -16,12 +16,12 @@ from send_to_fb import send_to_firestore
 load_dotenv()
 
 
-def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2: bool , group_id1 = 0, group_id2 = 0) -> None:
+def vfs_checkdates(link,abb1, isImportant: bool,acc_email, group_id1 = 0) -> None:
     REPORTERRORS = os.getenv("REPORTERRORS") == "True"
     try:
         with SB(uc=True, locale="en") as sb:
             url = link
-            login = get_waitlist_email()
+            login = acc_email
             password = get_password()
             
             #sb.execute_cdp_cmd("Network.clearBrowserCache", {})
@@ -30,7 +30,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
             
             
             sb.activate_cdp_mode(url)
-            sb.sleep(10)
+            sb.sleep(15)
             sb.cdp.click_if_visible("#onetrust-accept-btn-handler")
             ##CLOUDFLARE 
             #cf_manual_solver(sb)
@@ -55,8 +55,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     sb.sleep(10)
                     sb.click(".btn-brand-orange")
                     sb.sleep(10)
-                    sb.cdp.find_element('button:contains("Start New Booking")')
-                    
+                   # sb.cdp.find_element('button:contains("Start New Booking")')
+                    sb.cdp.find_element(f'div:contains("{group_id1}") span:contains(" Book Now ")')
                     loggedin = True
                    
                 except Exception as e:
@@ -71,6 +71,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 send_telegram_message_error(abb1 + " could not log in. May be blocked")
             card = sb.cdp.find_element(f'div:contains("{group_id1}") span:contains(" Book Now ")')
             card.click()
+            month = ""
             for i in range(2):
                 try:
                     print(f'try {i}')
@@ -78,7 +79,8 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     # 1. Month & Year from the header
                     header_text = sb.get_text("h2.fc-toolbar-title").strip()
                     month_name, year = header_text.split()
-                    month_num = datetime.strptime(month_name, "%B").month
+                    #month_num = datetime.strptime(month_name, "%B").month
+                    month = month_name
                     print(header_text)
                     # 2. All numbers inside divs with class "date-availiable"
                     available_dates_elements = sb.find_elements('.date-availiable')
@@ -96,39 +98,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                     append_to_csv(abb1,dates_to_db)
                 except Exception as e:
                     print(e)
-                    send_telegram_message_error(f" {abb1} no dates " )
-                    sb.click(".fc-next-button")
-            sb.cdp.click('#navbarDropdown',timeout=3)
-            sb.cdp.click('a:contains("Dashboard")',timeout=3)
-            sb.sleep(10)
-            card1 = sb.cdp.find_element(f'div:contains("ASTANA") span:contains(" Book Now ")')
-            card1.click()
-            for i in range(2):
-                try:
-                    print(f'try {i}')
-                    sb.sleep(10)
-                    # 1. Month & Year from the header
-                    header_text = sb.get_text("h2.fc-toolbar-title").strip()
-                    month_name, year = header_text.split()
-                    month_num = datetime.strptime(month_name, "%B").month
-                    print(header_text)
-                    # 2. All numbers inside divs with class "date-availiable"
-                    available_dates_elements = sb.find_elements('.date-availiable')
-                    available_dates = []
-                    dates_to_db = []
-                    for el in available_dates_elements:
-                        date_attr = el.get_attribute('data-date')
-                        if date_attr:
-                            available_dates.append(f"{date_attr[-2:]} {month_name} {year}")
-                            dates_to_db.append(date_attr)
-                    available_dates_str = "Available Dates: " + ", ".join(available_dates)
-                    print(available_dates_str)
-                    send_telegram_message_error(abb2 + " "+available_dates_str)
-                    send_to_firestore("list_appointment_dates","vfs",abb2,dates_to_db)
-                    append_to_csv(abb2,dates_to_db)
-                except Exception as e:
-                    print(e)
-                    send_telegram_message_error(f" {abb2} no dates " )
+                    send_telegram_message_error(f" {abb1} {month} no dates " )
                     sb.click(".fc-next-button")
             
             

@@ -166,6 +166,7 @@ def vfs_checkdates(link,city1,city2,abb1,abb2, isImportant: bool , isImportant2:
                 send_telegram_message(abb2 +"\n" +dates)
             send_to_db(abb2 +"\n" +dates)
             append_to_csv(abb2,dates)
+            
     except Exception as e:
         print(e)
         if(REPORTERRORS):
